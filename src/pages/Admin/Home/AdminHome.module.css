@@ -1,0 +1,51 @@
+.container{
+    display: flex;
+    flex-direction: row;
+}
+
+.container__card{
+    /*margin-top: 0;*/
+    margin: 0 auto;
+    padding: 5px;
+}
+
+.customer_count{
+    display: flex;
+    margin-top: 30px;
+    font-family: Cantarell;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.customer_count__label{
+    font-size: x-large;
+    font-weight: bolder;
+    margin: 20px;
+    border: 5px solid blue;
+    padding: 20px;
+    color: coral;
+}
+
+.customer_count__content {
+    font-size: x-large;
+    margin: 20px;
+    border: 5px solid red;
+    padding: 20px 20px 20px 20px;
+}
+
+.input_query {
+    border-color: green;
+}
+
+.select_query {
+    margin-top: 20px;
+    width: 150px;
+    height: 30px;
+}
+
+.average_users {
+    font-size: large;
+    margin-top: 50px;
+    padding: 20px;
+    border: 1px solid black;
+}
