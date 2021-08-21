@@ -93,7 +93,7 @@ const RegistrationForm = props => {
 
     return (
         <div className="card col-12 col-lg-4 login-card mt-5 hv-center mx-auto d-block">
-            <Header />
+            <Header name="Register"/>
             <form action="">
                 <div className="form-group text-left mt-3">
                     <label htmlFor="nameadmin">Your Full Name</label>

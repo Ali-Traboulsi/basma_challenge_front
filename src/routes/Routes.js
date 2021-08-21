@@ -12,6 +12,7 @@ import RegistrationForm from "../components/RegistrationForm/RegistrationForm";
 import AdminHome from "../pages/Admin/Home/AdminHome";
 import Registration from "../pages/User/Registration/Registration";
 import Welcome from "../pages/User/Welcome/Welcome";
+import LoginForm from "../components/LoginForm/LoginForm";
 
 const authRoute = (Component) => {
     if (localStorage.getItem(ACCESS_TOKEN)) {
@@ -25,12 +26,13 @@ const Routes = props => {
     return (
         <Router {...props}>
             <Switch>
+                <Route path="/admin/login" component={LoginForm}/>
                 <Route exact path="/">
-                    <Redirect to="/admin/home"/>
+                    <Redirect to="/dashboard/home"/>
                 </Route>
                 <Route path="/admin/register" component={RegistrationForm}/>
                 {/*<Route path="/admin/home" component={AdminHome}/>*/}
-                <Route path="/admin/home">
+                <Route path="/dashboard/home">
                     {authRoute(AdminHome)}
                 </Route>
                 <Route path="/user/register" component={Registration}/>

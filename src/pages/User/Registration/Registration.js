@@ -56,7 +56,7 @@ const Registration = props => {
 
     return (
         <div className="card col-12 col-lg-4 login-card mt-5 hv-center mx-auto d-block">
-            <Header />
+            <Header name="Register" />
             <form action="" onSubmit={handleSubmit(handleFormSubmit)}>
                 <div>
                     {/*<label htmlFor="Input Name">Your Full Name</label>*/}

@@ -7,7 +7,7 @@ const Header = props => {
             <nav className="navbar navbar-dark bg-primary">
                 <div className="row col-12 d-flex justify-content-center text-white">
                     <span className="h1 mx-auto">
-                        Register
+                        {props.name}
                     </span>
                 </div>
             </nav>

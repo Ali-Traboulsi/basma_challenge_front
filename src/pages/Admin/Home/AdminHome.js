@@ -4,6 +4,7 @@ import axios from "axios";
 import Topbar from "../../../components/TopBar/Topbar";
 import {AppProvider, Page, Card, Button, TopBar} from '@shopify/polaris';
 import styles from './AdminHome.module.css';
+import ReactPaginate from "react-paginate";
 
 const AdminHome = props => {
 
@@ -21,13 +22,17 @@ const AdminHome = props => {
     const [duration, setDuration] = useState("");
     const [durationArr, setDurationArray] = useState(["d1", "w1", "m1", "m3", "y1"])
     const [avgInfo, setAvgInfo] = useState("");
+    const [currentPage, setCurrentPage] = useState(1)
+    const [pageCount, setPageCount] = useState(1);
 
     const getCustomersApi = async () => {
         try {
-            const result = await axios.get(`http://localhost:8000/api/user/get-all-users?items=${items}`)
+            const result = await axios.get(`http://localhost:8000/api/user/get-all-users?page=${currentPage}`)
             console.log(result.data);
             setCustomers(result.data.customers.data);
+            setCurrentPage(result.data.customers.current_page)
             setCustomerCount(result.data.customerNum);
+            setPageCount(result.data.customers.last_page);
             console.log(customerCount, customers);
         } catch (err) {
             console.log(err)
@@ -38,7 +43,8 @@ const AdminHome = props => {
         axios.get(`http://localhost:8000/api/user/get-users-after-date?duration=${duration}`).then(result => {
             setAvgInfo(result.data.users);
         })
-    },[duration])
+        getCustomersApi();
+    },[duration, currentPage])
 
     const handleClick = () => {
         console.log(data);
@@ -64,9 +70,22 @@ const AdminHome = props => {
             setDuration(e.target.value)
     }
 
+    const handlePageClick = async (e) => {
+        await setCurrentPage(e.selected);
+        console.log(currentPage);
+    }
+
     return (
         <div>
-            <button onClick={getCustomersApi}>Get Customers</button>
+            <div className="mb-5">
+                <label htmlFor="itemsPerPage">
+                    <p className="mb-3">Enter number of customers per page</p>
+                    <input name="itemsPerPage" id="itemsPerPage" type="number" className={styles.input_query} onChange={handleItemsChange}/>
+                </label>
+                <div className="mt-3">
+                    <button onClick={getCustomersApi}>Get Customers</button>
+                </div>
+            </div>
             <div>
                 {
                     (customerCount)
@@ -78,9 +97,44 @@ const AdminHome = props => {
                         : null
                 }
             </div>
-            <div>
-                <input type="number" className={styles.input_query} onChange={handleItemsChange}/>
-            </div>
+            <table className="table">
+                <thead>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                </thead>
+                <tbody>
+                    {
+                        (customers.length > 0)
+                            ? (customers.map(customer => {
+                                return <tr>
+                                    <td>{customer.name}</td>
+                                    <td>{customer.email}</td>
+                                </tr>
+                            }))
+                            : null
+                    }
+                </tbody>
+            </table>
+            <ReactPaginate
+                previousLabel={"prev"}
+                nextLabel={"next"}
+                breakLabel={"..."}
+                breakClassName={"break-me"}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageClick}
+                containerClassName={styles.pagination}
+                subContainerClassName={styles.pagination}
+                activeClassName={styles.active}/>
+
+            <hr className={styles.hr} />
+            <h1 className="h1 mb-5">
+                Average API
+            </h1>
+            <h1>
+                Choose the duration by which users registered
+            </h1>
             <div>
                 <select className={styles.select_query} name="duration" id="duration" onChange={handleDurationChange}>
                     <option value=""></option>
