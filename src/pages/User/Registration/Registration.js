@@ -47,7 +47,7 @@ const Registration = props => {
             formdata.append("name", name);
             formdata.append("email", email);
             formdata.append("password", password);
-            const result = await axios.post("http://localhost:8000/api/user/register", formdata);
+            const result = await axios.post("https://basmaku.herokuapp.com/api/user/register", formdata);
             redirectToWelcome();
         } catch (err) {
             console.log(err)

@@ -28,7 +28,7 @@ const LoginForm = props => {
             const formdata = new FormData();
             formdata.append("email", email);
             formdata.append("password", password);
-            const result = await axios.post("http://localhost:8000/api/admin/login", formdata);
+            const result = await axios.post("https://basmaku.herokuapp.com/api/admin/login", formdata);
             console.log(result);
             localStorage.setItem(ACCESS_TOKEN, result.data.token.access_token);
             if (result.status === 200) {

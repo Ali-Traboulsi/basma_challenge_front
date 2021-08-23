@@ -20,19 +20,19 @@ const AdminHome = props => {
     const [items, setItems] = useState(0);
     const [avgUsers, setAvgUsers] = useState(0.0);
     const [duration, setDuration] = useState("");
-    const [durationArr, setDurationArray] = useState(["d1", "w1", "m1", "m3", "y1"])
+    const [durationArr, setDurationArray] = useState(["last day", "last week", "last month", "last three months", "last year"])
     const [avgInfo, setAvgInfo] = useState("");
     const [currentPage, setCurrentPage] = useState(1)
     const [pageCount, setPageCount] = useState(1);
 
     const getCustomersApi = async () => {
         try {
-            const result = await axios.get(`http://localhost:8000/api/user/get-all-users?page=${currentPage}`)
+            const result = await axios.post(`https://basmaku.herokuapp.com/api/user/get-all-users?page=${currentPage}`, {items: items})
             console.log(result.data);
             setCustomers(result.data.customers.data);
-            setCurrentPage(result.data.customers.current_page)
+            await setCurrentPage(result.data.customers.current_page)
             setCustomerCount(result.data.customerNum);
-            setPageCount(result.data.customers.last_page);
+            await setPageCount(result.data.customers.last_page);
             console.log(customerCount, customers);
         } catch (err) {
             console.log(err)
@@ -40,10 +40,11 @@ const AdminHome = props => {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/user/get-users-after-date?duration=${duration}`).then(result => {
+        axios.get(`https://basmaku.herokuapp.com/api/user/get-users-after-date?duration=${duration}`).then(result => {
             setAvgInfo(result.data.users);
         })
         getCustomersApi();
+        console.log(currentPage);
     },[duration, currentPage])
 
     const handleClick = () => {
@@ -67,12 +68,27 @@ const AdminHome = props => {
 
     const handleDurationChange = async (e) => {
             e.preventDefault();
-            setDuration(e.target.value)
+            switch (e.target.value) {
+                case "last day":
+                    setDuration("d1");
+                    break;
+                case "last week":
+                    setDuration("w1");
+                    break;
+                case "last month":
+                    setDuration("m1");
+                    break;
+                case "last three months":
+                    setDuration("m3");
+                    break;
+                case "last year":
+                    setDuration("y1");
+                    break;
+            }
     }
 
-    const handlePageClick = async (e) => {
-        await setCurrentPage(e.selected);
-        console.log(currentPage);
+    const handlePageClick = (e) => {
+        setCurrentPage(e.selected + 1);
     }
 
     return (
